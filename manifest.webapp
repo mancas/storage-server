@@ -3,7 +3,7 @@
   "name": "DeviceStorageService",
   "description": "DeviceStorage Service",
   "type": "certified",
-  "launch_path": "/storage-server/device-storage/index.html",
+  "launch_path": "/storage-server/index.html",
   "icons": {
     "16": "/storage-server/style/icons/icon.png",
     "48": "/storage-server/style/icons/icon.png",
