@@ -38,11 +38,16 @@
 debug(JSON.stringify(request));
 debug(JSON.stringify(requestOp));
     if (requestOp.operation === 'getDeviceStorage') {
-      _deviceStorages[request.id] =
-        navigator.getDeviceStorage(requestOp.params);
-
+      var deviceStorages = navigator.getDeviceStorages(requestOp.params);
+      deviceStorages.forEach(ds => {
+        if (ds.storageName === requestOp.storageName) {
+          _deviceStorages[request.id] = ds;
+          break;
+        }
+      });
       debug(_deviceStorages[request.id].storageName);
-      // Let's assume this works always..
+      console.info(_deviceStorages);
+      // Let's assume this works always...
       channel.postMessage({remotePortId: remotePortId, data: {id: request.id}});
     } else if (requestOp.operation === 'onchange') {
       _deviceStorages[requestOp.deviceStorageId].onchange = observerTemplate;
