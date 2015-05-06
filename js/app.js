@@ -42,7 +42,7 @@ debug(JSON.stringify(requestOp));
       deviceStorages.forEach(ds => {
         if (ds.storageName === requestOp.storageName) {
           _deviceStorages[request.id] = ds;
-          break;
+          return;
         }
       });
       debug(_deviceStorages[request.id].storageName);
