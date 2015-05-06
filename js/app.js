@@ -52,7 +52,7 @@ debug(JSON.stringify(requestOp));
         method = 'apply';
       }
       _deviceStorages[requestOp.deviceStorageId][requestOp.operation]
-        [method](this, requestOp.params).
+        [method](_deviceStorages[requestOp.deviceStorageId], requestOp.params).
           then(result => {
             channel.postMessage({
               remotePortId: remotePortId,
