@@ -14,7 +14,7 @@
   var register = function(evt) {
     debug('APP executing register...');
     navigator.serviceWorker.
-      register('/WebAPI_pf/services/common/sw.js', {scope: './'}).
+      register('/storage-server/sw.js', {scope: './'}).
       then(function(reg) {
         debug('APP Registration succeeded. Scope: ' + reg.scope);
         if (reg.installing) {
