@@ -40,6 +40,8 @@ debug(JSON.stringify(requestOp));
     if (requestOp.operation === 'getDeviceStorage') {
       _deviceStorages[request.id] =
         navigator.getDeviceStorage(requestOp.params);
+
+      debug(_deviceStorages[request.id].storageName);
       // Let's assume this works always..
       channel.postMessage({remotePortId: remotePortId, data: {id: request.id}});
     } else if (requestOp.operation === 'onchange') {
