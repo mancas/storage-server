@@ -51,37 +51,39 @@ debug(JSON.stringify(requestOp));
       channel.postMessage({remotePortId: remotePortId, data: {id: request.id}});
     } else if (requestOp.operation === 'onchange') {
       _deviceStorages[requestOp.deviceStorageId].onchange = observerTemplate;
-    } else if (requestOp.operation === 'enumerate') {
-      var cursor = _deviceStorages[requestOp.deviceStorageId].enumerate.
-        apply(_deviceStorages[requestOp.deviceStorageId], requestOp.params);
-      var files = [];
+    } else if (requestOp.operation === 'enumerate' ||
+      requestOp === 'enumerateEditable') {
+        var cursor =
+          _deviceStorages[requestOp.deviceStorageId][requestOp.operation].
+          apply(_deviceStorages[requestOp.deviceStorageId], requestOp.params);
+        var files = [];
 
-      cursor.onsuccess = () => {
-        var file = cursor.result;
-        // 'cursor.done' flag should be activated when the last file is reached
-        // However, it seems that the flag is only is enabled in 
-        // the next iteration so we've always got an undefined file
-        if (typeof file !== 'undefined') {
-          files.push(cursor.result);
-        }
+        cursor.onsuccess = () => {
+          var file = cursor.result;
+          // 'cursor.done' flag should be activated when the last file is
+          // reached. However, it seems that the flag is only is enabled in 
+          // the next iteration so we've always got an undefined file
+          if (typeof file !== 'undefined') {
+            files.push(cursor.result);
+          }
 
-        if (!cursor.done) {
-          cursor.continue();
-        } else {
-          // Send message
+          if (!cursor.done) {
+            cursor.continue();
+          } else {
+            // Send message
+            channel.postMessage({
+              remotePortId: remotePortId,
+              data: { id : request.id, result: files}}
+            );
+          }
+        };
+
+        cursor.onerror = () => {
           channel.postMessage({
             remotePortId: remotePortId,
-            data: { id : request.id, result: files}}
+            data: { id : request.id, error: cursor.error}}
           );
-        }
-      };
-
-      cursor.onerror = () => {
-        channel.postMessage({
-          remotePortId: remotePortId,
-          data: { id : request.id, error: cursor.error}}
-        );
-      };
+        };
     } else {
       var method = 'call';
       if (requestOp.params && typeof requestOp.params === 'object') {
