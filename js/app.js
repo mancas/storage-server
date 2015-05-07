@@ -52,7 +52,7 @@ debug(JSON.stringify(requestOp));
     } else if (requestOp.operation === 'onchange') {
       _deviceStorages[requestOp.deviceStorageId].onchange = observerTemplate;
     } else if (requestOp.operation === 'enumerate' ||
-      requestOp === 'enumerateEditable') {
+      requestOp.operation === 'enumerateEditable') {
         var cursor =
           _deviceStorages[requestOp.deviceStorageId][requestOp.operation].
           apply(_deviceStorages[requestOp.deviceStorageId], requestOp.params);
