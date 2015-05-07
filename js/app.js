@@ -57,9 +57,9 @@ debug(JSON.stringify(requestOp));
       var files = [];
 
       cursor.onsuccess = () => {
-        files.push(this.result);
+        files.push(cursor.result);
 
-        if (this.done) {
+        if (cursor.done) {
           // Send message
           channel.postMessage({
             remotePortId: remotePortId,
@@ -68,13 +68,13 @@ debug(JSON.stringify(requestOp));
           return;
         }
 
-        this.continue();
+        cursor.continue();
       };
 
       cursor.onerror = () => {
         channel.postMessage({
           remotePortId: remotePortId,
-          data: { id : request.id, error: this.error}}
+          data: { id : request.id, error: cursor.error}}
         );
       };
     } else {
