@@ -57,7 +57,13 @@ debug(JSON.stringify(requestOp));
       var files = [];
 
       cursor.onsuccess = () => {
-        files.push(cursor.result);
+        var file = cursor.result;
+        // 'cursor.done' flag should be activated when the last file is reached
+        // However, it seems that the flag is only is enabled in 
+        // the next iteration so we've always got an undefined file
+        if (typeof file !== 'undefined') {
+          files.push(cursor.result);
+        }
 
         if (!cursor.done) {
           cursor.continue();
