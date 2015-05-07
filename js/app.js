@@ -51,6 +51,32 @@ debug(JSON.stringify(requestOp));
       channel.postMessage({remotePortId: remotePortId, data: {id: request.id}});
     } else if (requestOp.operation === 'onchange') {
       _deviceStorages[requestOp.deviceStorageId].onchange = observerTemplate;
+    } else if (requestOp.operation === 'enumerate') {
+      var cursor = _deviceStorages[requestOp.deviceStorageId].enumerate.
+        apply(_deviceStorages[requestOp.deviceStorageId], requestOp.params);
+      var files = [];
+
+      cursor.onsuccess = () => {
+        files.push(this.result);
+
+        if (this.done) {
+          // Send message
+          channel.postMessage({
+            remotePortId: remotePortId,
+            data: { id : request.id, result: files}}
+          );
+          return;
+        }
+
+        this.continue();
+      };
+
+      cursor.onerror = () => {
+        channel.postMessage({
+          remotePortId: remotePortId,
+          data: { id : request.id, error: this.error}}
+        );
+      };
     } else {
       var method = 'call';
       if (requestOp.params && typeof requestOp.params === 'object') {
