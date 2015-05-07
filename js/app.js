@@ -59,16 +59,15 @@ debug(JSON.stringify(requestOp));
       cursor.onsuccess = () => {
         files.push(cursor.result);
 
-        if (cursor.done) {
+        if (!cursor.done) {
+          cursor.continue();
+        } else {
           // Send message
           channel.postMessage({
             remotePortId: remotePortId,
             data: { id : request.id, result: files}}
           );
-          return;
         }
-
-        cursor.continue();
       };
 
       cursor.onerror = () => {
