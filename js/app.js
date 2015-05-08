@@ -2,7 +2,7 @@
   'use strict';
 
   function debug(str) {
-    console.log('MANU - DeviceStorageService -*-:' + str);
+    console.log('DeviceStorageService -*-:' + str);
   }
 
   // Ok, this kinda sucks because most APIs (and settings is one of them) cannot
@@ -10,7 +10,6 @@
   // down to the SW thread, then back up here for processing, then back down to
   // be sent to the client. Yay us!
   var _deviceStorages = {};
-  var _observers = {};
 
   var processSWRequest = function(channel, evt) {
     // We can get:
@@ -35,8 +34,7 @@
         }
       });
     }
-debug(JSON.stringify(request));
-debug(JSON.stringify(requestOp));
+
     if (requestOp.operation === 'getDeviceStorage') {
       var deviceStorages = navigator.getDeviceStorages(requestOp.params);
       deviceStorages.forEach(ds => {
@@ -45,8 +43,6 @@ debug(JSON.stringify(requestOp));
           return;
         }
       });
-      debug(_deviceStorages[request.id].storageName);
-      console.info(_deviceStorages);
       // Let's assume this works always...
       channel.postMessage({remotePortId: remotePortId, data: {id: request.id}});
     } else if (requestOp.operation === 'onchange') {

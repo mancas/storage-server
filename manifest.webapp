@@ -3,12 +3,13 @@
   "name": "DeviceStorageService",
   "description": "DeviceStorage Service",
   "type": "certified",
+  "role": "system",
   "launch_path": "/storage-server/index.html",
   "icons": {
-    "16": "/storage-server/style/icons/icon.png",
-    "48": "/storage-server/style/icons/icon.png",
-    "60": "/storage-server/style/icons/icon.png",
-    "128": "/storage-server/style/icons/icon.png"
+    "16": "/storage-server/common/style/icons/icon.png",
+    "48": "/storage-server/common/style/icons/icon.png",
+    "60": "/storage-server/common/style/icons/icon.png",
+    "128": "/storage-server/common/style/icons/icon.png"
   },
   "connections": {
     "https://devicestorageservice.gaiamobile.org": {
