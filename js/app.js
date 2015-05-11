@@ -103,7 +103,7 @@
         cursor.onerror = () => {
           channel.postMessage({
             remotePortId: remotePortId,
-            data: { id : request.id, error: cursor.error}}
+            data: { id : request.id, error: JSON.stringify(cursor.error)}}
           );
         };
     } else {
@@ -119,10 +119,9 @@
               data: { id : request.id, result: result}}
             );
       }).catch(error => {
-        console.info(error);
         channel.postMessage({
           remotePortId: remotePortId,
-          data: { id : request.id, result: error.name}}
+          data: { id : request.id, error: JSON.stringify(error)}}
         );
       });
     }
