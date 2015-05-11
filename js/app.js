@@ -119,9 +119,10 @@
               data: { id : request.id, result: result}}
             );
       }).catch(error => {
+        console.info(error);
         channel.postMessage({
           remotePortId: remotePortId,
-          data: { id : request.id, result: error}}
+          data: { id : request.id, result: error.name}}
         );
       });
     }
