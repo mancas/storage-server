@@ -10,12 +10,16 @@
   // down to the SW thread, then back up here for processing, then back down to
   // be sent to the client. Yay us!
   var _deviceStorages = {};
+  var _listeners = {};
 
   var processSWRequest = function(channel, evt) {
     // We can get:
     // * methodName
     // * onchange
     // * getDeviceStorage
+    // * addEventListener
+    // * removeEventListener
+    // * dispatchEvent
     // All the operations have a requestId, and the lock operations also include
     // a deviceStorage id.
     var remotePortId = evt.data.remotePortId;
@@ -35,6 +39,18 @@
       });
     }
 
+    function listenerTemplate(evt) {
+      channel.postMessage({
+        remotePortId: remotePortId,
+        data: {
+          id: request.id,
+          data: {
+            event: evt
+          }
+        }
+      });
+    }
+
     if (requestOp.operation === 'getDeviceStorage') {
       var deviceStorages = navigator.getDeviceStorages(requestOp.params);
       deviceStorages.forEach(ds => {
@@ -47,6 +63,15 @@
       channel.postMessage({remotePortId: remotePortId, data: {id: request.id}});
     } else if (requestOp.operation === 'onchange') {
       _deviceStorages[requestOp.deviceStorageId].onchange = observerTemplate;
+    } else if (requestOp.operation === 'addEventListener') {
+      _listeners[request.id] = listenerTemplate;
+      _deviceStorages[requestOp.deviceStorageId].
+        addEventListener(requestOp.type, _listeners[request.id], requestOp.useCapture);
+    } else if (requestOp.operation === 'removeEventListener') {
+      _deviceStorages[requestOp.deviceStorageId].
+        removeObserver(_listeners[request.id]);
+    } else if (requestOp.operation === 'dispatchEvent') {
+      _deviceStorages[requestOp.deviceStorageId].dispatchEvent(requestOp.event);
     } else if (requestOp.operation === 'enumerate' ||
       requestOp.operation === 'enumerateEditable') {
         var cursor =
