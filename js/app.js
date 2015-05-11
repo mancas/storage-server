@@ -91,6 +91,7 @@
           if (!cursor.done) {
             cursor.continue();
           } else {
+            console.info(files);
             // Send message
             channel.postMessage({
               remotePortId: remotePortId,
