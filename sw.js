@@ -7,7 +7,7 @@
 // ADDED FOR POLYFILL
 
 function debug(str) {
-  console.log('DeviceStorage Service SW -*- -->' + str);
+  console.log('MANU DeviceStorage Service SW -*- -->' + str);
 }
 
 // ADDED FOR POLYFILL: Import the polyfill script
@@ -61,7 +61,7 @@ this.onconnect = function(msg) {
   remotePort.onmessage = aMsg => {
 
     // TO-DO: We should implement access control here also!
-    debug('SW SETTING msg received:' + JSON.stringify(aMsg.data));
+    debug('SW msg received:' + JSON.stringify(aMsg.data));
     var requestId = aMsg.data.id;
     if (requestId) {
       debug('onmessage. Got Request:' + JSON.stringify(aMsg.data));
