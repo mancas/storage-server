@@ -75,7 +75,7 @@
     var opData = request.remoteData.data.params || [];
     var reqId = request.remoteData.id;
     var deviceStorageId = request.remoteData.data.deviceStorageId;
-    
+
     _deviceStorages[deviceStorageId][operation](...opData).then(result => {
       channel.postMessage({
         remotePortId: remotePortId,
@@ -127,6 +127,7 @@
           return;
         }
       });
+      console.info(_deviceStorages[reqId]);
       // Let's assume this works always...
       channel.postMessage({remotePortId: remotePortId, data: {id: reqId}});
     },
