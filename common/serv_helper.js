@@ -40,22 +40,45 @@
     });
   };
 
-if ('serviceWorker' in navigator) {
-  window.ServiceHelper = {
-    register: function(processSWRequest) {
-      register();
-      navigator.serviceWorker.ready.then(sw => {
-        // Let's pass the SW some way to talk to us...
-        var mc = new MessageChannel();
-        mc.port1.onmessage = processSWRequest.bind(this, mc.port1);
-        sw.active && sw.active.postMessage({}, [mc.port2]);
-      });
-    },
-    unregister: unregister
+  // Circular objects will cause this to hang
+  var cloneObject = function(obj, recursive) {
+    if (typeof obj === 'string') {
+      return obj;
+    }
+    var cloned = {};
+    for (var key in obj) {
+      if (Array.isArray(obj[key])) {
+        cloned[key] = [];
+        var dest = cloned[key];
+        var source = obj[key];
+        for (var i = 0, l = source.length; i < l; i++) {
+          dest[i] = cloneObject(source[i], recursive);
+        }
+      } else if (typeof obj[key] === 'object') {
+        cloned[key] = recursive && cloneObject(obj[key], recursive) || obj[key];
+      } else if (typeof obj[key] !== 'function' || obj[key] === null) {
+        cloned[key] = obj[key];
+      }
+    }
+    return cloned;
   };
-} else {
-  debug('APP navigator does not have ServiceWorker');
-  return;
-}
 
+  if ('serviceWorker' in navigator) {
+    window.ServiceHelper = {
+      register: function(processSWRequest) {
+        register();
+        navigator.serviceWorker.ready.then(sw => {
+          // Let's pass the SW some way to talk to us...
+          var mc = new MessageChannel();
+          mc.port1.onmessage = processSWRequest.bind(this, mc.port1);
+          sw.active && sw.active.postMessage({}, [mc.port2]);
+        });
+      },
+      unregister: unregister,
+      cloneObject: cloneObject
+    };
+  } else {
+    debug('APP navigator does not have ServiceWorker');
+    return;
+  }
 })(window);
