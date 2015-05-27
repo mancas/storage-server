@@ -122,6 +122,7 @@
 
       var deviceStorages = navigator.getDeviceStorages(...opData);
       deviceStorages.forEach(ds => {
+        console.info(ds.storageName, requestOp.storageName, ds.storageName === requestOp.storageName);
         if (ds.storageName === requestOp.storageName) {
           _deviceStorages[reqId] = ds;
           return;
