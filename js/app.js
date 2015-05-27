@@ -158,8 +158,7 @@
   ['add', 'addNamed',
     'available', 'delete',
     'freeSpace', 'get',
-    'getEditable', 'usedSpace',
-    'enumerate', 'enumerateEditable'].forEach(method => {
+    'getEditable', 'usedSpace'].forEach(method => {
       _operations[method] = buildDOMRequestAnswer.bind(undefined, method);
   });
 
