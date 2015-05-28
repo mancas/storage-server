@@ -42,13 +42,16 @@
     // FIX-ME: Due to the way FakeDOMCursorRequest is implemented, we
     // have to return all the fetched data on a single message
     var hasParameters = false;
-    opData.forEach(param => {
+    opData.forEach((param, index) => {
       if (param !== null && typeof param !== 'undefined') {
         hasParameters = true;
         return;
+      } else {
+        console.info(index);
+        opData.splice(index, 1);
       }
     });
-
+console.info(opData);
     if(!hasParameters) {
       opData = [];
     }
@@ -134,13 +137,11 @@
 
       var deviceStorages = navigator.getDeviceStorages(...opData);
       deviceStorages.forEach(ds => {
-        console.info(ds.storageName, requestOp.storageName, ds.storageName === requestOp.storageName);
         if (ds.storageName === requestOp.storageName) {
           _deviceStorages[reqId] = ds;
           return;
         }
       });
-      console.info(_deviceStorages[reqId]);
       // Let's assume this works always...
       channel.postMessage({remotePortId: remotePortId, data: {id: reqId}});
     },
