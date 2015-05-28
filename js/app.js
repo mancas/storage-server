@@ -44,7 +44,7 @@
     var hasParameters = false;
     opData.forEach(param => {
       console.info('Param value ->' + param);
-      if (param !== null) {
+      if (param !== null && typeof param !== 'undefined') {
         hasParameters = true;
         return;
       }
