@@ -39,11 +39,11 @@
     var reqId = request.remoteData.id;
     var deviceStorageId = request.remoteData.data.deviceStorageId;
 
-    /*opData.forEach((param, index) => {
+    opData.forEach((param, index) => {
       if (param === null || typeof param === 'undefined') {
         opData.splice(index, 1);
       }
-    });*/
+    });
 
     // FIX-ME: Due to the way FakeDOMCursorRequest is implemented, we
     // have to return all the fetched data on a single message
