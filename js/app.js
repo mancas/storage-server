@@ -39,24 +39,14 @@
     var reqId = request.remoteData.id;
     var deviceStorageId = request.remoteData.data.deviceStorageId;
 
-    // FIX-ME: Due to the way FakeDOMCursorRequest is implemented, we
-    // have to return all the fetched data on a single message
-    var hasParameters = false;
     opData.forEach((param, index) => {
-      if (param !== null && typeof param !== 'undefined') {
-        console.info(typeof param, param);
-        hasParameters = true;
-        return;
-      } else {
-        console.info(index);
+      if (param === null || typeof param === 'undefined') {
         opData.splice(index, 1);
       }
     });
-console.info(opData);
-    if(!hasParameters) {
-      opData = [];
-    }
-    
+
+    // FIX-ME: Due to the way FakeDOMCursorRequest is implemented, we
+    // have to return all the fetched data on a single message
     var cursor = _deviceStorages[deviceStorageId][operation](...opData);
     var files = [];
 
