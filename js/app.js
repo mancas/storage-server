@@ -43,7 +43,6 @@
     // have to return all the fetched data on a single message
     var hasParameters = false;
     opData.forEach(param => {
-      console.info('Param value ->' + param);
       if (param !== null && typeof param !== 'undefined') {
         hasParameters = true;
         return;
@@ -51,12 +50,13 @@
     });
 
     var cursor;
-    if(!hasParameters) {
+    /*if(!hasParameters) {
       cursor = _deviceStorages[deviceStorageId][operation]();
     } else {
       cursor = _deviceStorages[deviceStorageId][operation](...opData);
-    }
-console.info(hasParameters);
+    }*/
+    opData= [];
+cursor = _deviceStorages[deviceStorageId][operation](...opData);
     var files = [];
 
     cursor.onsuccess = () => {
