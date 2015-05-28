@@ -49,11 +49,13 @@
       }
     });
 
+    var cursor;
     if(!hasParameters) {
-      opData = [];
+      cursor = _deviceStorages[deviceStorageId][operation]();
+    } else {
+      cursor = _deviceStorages[deviceStorageId][operation](...opData);
     }
 
-    var cursor = _deviceStorages[deviceStorageId][operation](...opData);
     var files = [];
 
     cursor.onsuccess = () => {
