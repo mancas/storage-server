@@ -49,14 +49,11 @@
       }
     });
 
-    var cursor;
-    /*if(!hasParameters) {
-      cursor = _deviceStorages[deviceStorageId][operation]();
-    } else {
-      cursor = _deviceStorages[deviceStorageId][operation](...opData);
-    }*/
-    opData= [];
-cursor = _deviceStorages[deviceStorageId][operation](...opData);
+    if(!hasParameters) {
+      opData = [];
+    }
+    
+    var cursor = _deviceStorages[deviceStorageId][operation](...opData);
     var files = [];
 
     cursor.onsuccess = () => {
