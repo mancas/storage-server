@@ -41,8 +41,18 @@
 
     // FIX-ME: Due to the way FakeDOMCursorRequest is implemented, we
     // have to return all the fetched data on a single message
-    console.info(opData.length, ...opData, ...[]);
     var hasParameters = false;
+    opData.forEach(param => {
+      if (param !== null) {
+        hasParameters = true;
+        return;
+      }
+    });
+
+    if(!hasParameters) {
+      opData = [];
+    }
+
     var cursor = _deviceStorages[deviceStorageId][operation](...opData);
     var files = [];
 
