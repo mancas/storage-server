@@ -41,7 +41,11 @@
 
     // Remove tailing undefines
     for (var i = opData.length - 1; i >= 0; i--) {
-      typeof opData[i] === 'undefined' ? opData.pop() : break;
+      if (typeof opData[i] === 'undefined') {
+        opData.pop()
+      } else {
+        break;
+      }
     }
 
     // Trick: if we pass [undefined, options] as parameters to enumerate or
