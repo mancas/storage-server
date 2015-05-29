@@ -40,13 +40,8 @@
     var deviceStorageId = request.remoteData.data.deviceStorageId;
 
     // Remove tailing undefines
-    for (var i = opData.length - 1; i >= 0; i--) {
-      if (typeof opData[i] === 'undefined') {
-        opData.pop()
-      } else {
-        break;
-      }
-    }
+    for (var i = opData.length -1; i > = 0 &&
+      opData[i] === undefined && !opData.pop(); i--);
 
     // Trick: if we pass [undefined, options] as parameters to enumerate or
     // enumerateEditable, the method will crash, so we must remove
