@@ -40,7 +40,7 @@
     var deviceStorageId = request.remoteData.data.deviceStorageId;
 
     // Remove tailing undefines
-    for (var i = opData.length -1; i > = 0 &&
+    for (var i = opData.length -1; i >= 0 &&
       opData[i] === undefined && !opData.pop(); i--);
 
     // Trick: if we pass [undefined, options] as parameters to enumerate or
