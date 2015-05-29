@@ -39,12 +39,18 @@
     var reqId = request.remoteData.id;
     var deviceStorageId = request.remoteData.data.deviceStorageId;
 
-    opData.forEach((param, index) => {
-      if (param === null || typeof param === 'undefined') {
-        opData.splice(index, 1);
-      }
-    });
+    // Remove tailing undefines
+    for (var i = opData.length - 1; i >= 0; i--) {
+      typeof opData[i] === 'undefined' ? opData.pop() : break;
+    }
 
+    // Trick: if we pass [undefined, options] as parameters to enumerate or
+    // enumerateEditable, the method will crash, so we must remove
+    // the first undefined param
+    if (opData.length > 0 && typeof opData[0] === 'undefined') {
+      opData.shift();
+    }
+    
     // FIX-ME: Due to the way FakeDOMCursorRequest is implemented, we
     // have to return all the fetched data on a single message
     var cursor = _deviceStorages[deviceStorageId][operation](...opData);
